@@ -170,4 +170,49 @@ describe('TaxDeclarationController', () => {
       expect(response.statusCode).toBe(204);
     });
   });
+
+  describe('[GET] /tax-declarations/history?year=', () => {
+    it('it should be able to list tax declarations by year', async () => {
+      const user = await userFactory.makeUser({
+        email: 'bruno10@email.com',
+        password: await hash('123456', 10),
+        name: 'Bruno Rafael',
+      });
+
+      const accessToken = jwt.sign({ sub: user.id.toString() });
+
+      const taxDeclaration = await taxDeclarationFactory.makeTaxDeclaration({
+        complementarySocialSecurityContribution: 400,
+        earnings: 10000.22,
+        educationExpenses: 1000,
+        medicalExpenses: 2000,
+        socialSecurityContribution: 2000,
+        status: 'UNSUBMMITED',
+        userId: user.id,
+        alimony: 1000,
+        createdAt: new Date(
+          new Date().setFullYear(new Date().getFullYear() - 1),
+        ),
+      });
+
+      const response = await request(app.getHttpServer())
+        .get(`/tax-declarations/${taxDeclaration.id}`)
+        .set('Authorization', `Bearer ${accessToken}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toEqual({
+        id: taxDeclaration.id,
+        alimony: 1000,
+        complementarySocialSecurityContribution: 400,
+        createdAt: expect.any(String),
+        educationExpenses: 1000,
+        earnings: 10000.22,
+        medicalExpenses: 2000,
+        socialSecurityContribution: 2000,
+        status: 'UNSUBMMITED',
+        userId: user.id,
+        dependents: [],
+      });
+    });
+  });
 });
