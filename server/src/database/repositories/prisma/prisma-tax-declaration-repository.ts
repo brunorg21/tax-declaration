@@ -12,15 +12,26 @@ export class PrismaTaxDeclarationRepository
   async save(taxDeclaration: Prisma.TaxDeclarationCreateInput): Promise<void> {
     await this.prismaService.taxDeclaration.create({ data: taxDeclaration });
   }
-  async findManyByUserId(userId: string): Promise<TaxDeclaration[]> {
+  async findManyByYear(
+    userId: string,
+    year: number,
+  ): Promise<TaxDeclaration[]> {
+    const startOfYear = new Date(year, 0, 1);
+    const startOfNextYear = new Date(year + 1, 0, 1);
+
     const taxeDeclarations = await this.prismaService.taxDeclaration.findMany({
       where: {
         userId,
+        createdAt: {
+          gte: startOfYear,
+          lt: startOfNextYear,
+        },
       },
     });
 
     return taxeDeclarations;
   }
+
   async findUnique(taxDeclarationId: string): Promise<TaxDeclaration | null> {
     const taxDeclaration = await this.prismaService.taxDeclaration.findUnique({
       where: {
