@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../app.module';
 import { DatabaseModule } from '../database/database-module';
-import { UserFactory } from '../factories/make-user';
+import { UserFactory } from '../../test/factories/make-user';
 import { hash } from 'bcrypt';
 import request from 'supertest';
 import { beforeAll, describe, expect, it } from 'vitest';
