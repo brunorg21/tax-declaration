@@ -19,7 +19,7 @@ export class PrismaUserRepository implements UserRepository {
 
     return user;
   }
-  async save(user: Prisma.UserCreateInput): Promise<void> {
+  async save(user: Prisma.UserUncheckedCreateInput): Promise<void> {
     await this.prismaService.user.create({ data: user });
   }
 }
