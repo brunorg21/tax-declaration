@@ -28,7 +28,7 @@ describe('AppController', () => {
 
   describe('[POST] Auth Controller', () => {
     it('should be able to sign in', async () => {
-      const user = await userFactory.makePrismaUser({
+      const user = await userFactory.makeUser({
         email: 'bruno@email.com',
         password: await hash('123456', 10),
         name: 'Bruno',
