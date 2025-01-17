@@ -39,8 +39,8 @@ const createTaxDeclarationSchema = z.object({
   socialSecurityContribution: z.number(),
   complementarySocialSecurityContribution: z.number(),
   status: z
-    .enum([TaxDeclarationTypes.UNSUBMMITED, TaxDeclarationTypes.SUBMMITED])
-    .default(TaxDeclarationTypes.UNSUBMMITED),
+    .enum([TaxDeclarationTypes.SUBMITTED, TaxDeclarationTypes.UNSUBMITTED])
+    .default(TaxDeclarationTypes.UNSUBMITTED),
   dependents: z
     .array(
       z.object({
@@ -71,8 +71,8 @@ const updateTaxDeclarationSchema = z.object({
   socialSecurityContribution: z.number(),
   complementarySocialSecurityContribution: z.number(),
   status: z
-    .enum([TaxDeclarationTypes.UNSUBMMITED, TaxDeclarationTypes.SUBMMITED])
-    .default(TaxDeclarationTypes.UNSUBMMITED),
+    .enum([TaxDeclarationTypes.UNSUBMITTED, TaxDeclarationTypes.SUBMITTED])
+    .default(TaxDeclarationTypes.UNSUBMITTED),
   dependents: z
     .array(
       z.object({

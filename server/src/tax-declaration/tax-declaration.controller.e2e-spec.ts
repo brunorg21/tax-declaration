@@ -82,7 +82,7 @@ describe('TaxDeclarationController', () => {
         educationExpenses: 1000,
         medicalExpenses: 2000,
         socialSecurityContribution: 2000,
-        status: 'UNSUBMMITED',
+        status: 'UNSUBMITTED',
         userId: user.id,
         alimony: 1000,
         createdAt: new Date(
@@ -95,7 +95,7 @@ describe('TaxDeclarationController', () => {
         educationExpenses: 1000,
         medicalExpenses: 2000,
         socialSecurityContribution: 2000,
-        status: 'UNSUBMMITED',
+        status: 'UNSUBMITTED',
         userId: user.id,
         alimony: 1000,
         createdAt: new Date(
@@ -108,7 +108,7 @@ describe('TaxDeclarationController', () => {
         educationExpenses: 1000,
         medicalExpenses: 2000,
         socialSecurityContribution: 2000,
-        status: 'UNSUBMMITED',
+        status: 'UNSUBMITTED',
         userId: user.id,
         alimony: 1000,
         createdAt: new Date(),
@@ -139,7 +139,7 @@ describe('TaxDeclarationController', () => {
         educationExpenses: 1000,
         medicalExpenses: 2000,
         socialSecurityContribution: 2000,
-        status: 'UNSUBMMITED',
+        status: 'UNSUBMITTED',
         userId: user.id,
         alimony: 1000,
         createdAt: new Date(),
@@ -156,7 +156,7 @@ describe('TaxDeclarationController', () => {
           earnings: 2220.0,
           educationExpenses: 2400.0,
           medicalExpenses: 4020.0,
-          status: 'SUBMMITED',
+          status: 'SUBMITTED',
         });
 
       const taxDeclarationUpdated =
@@ -187,7 +187,7 @@ describe('TaxDeclarationController', () => {
         educationExpenses: 1000,
         medicalExpenses: 2000,
         socialSecurityContribution: 2000,
-        status: 'UNSUBMMITED',
+        status: 'UNSUBMITTED',
         userId: user.id,
         alimony: 1000,
         createdAt: new Date(
@@ -209,7 +209,7 @@ describe('TaxDeclarationController', () => {
         earnings: 10000.22,
         medicalExpenses: 2000,
         socialSecurityContribution: 2000,
-        status: 'UNSUBMMITED',
+        status: 'UNSUBMITTED',
         userId: user.id,
         dependents: [],
       });

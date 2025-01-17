@@ -8,7 +8,7 @@ export interface CreateTaxDeclarationRequest {
   alimony: number;
   socialSecurityContribution: number;
   complementarySocialSecurityContribution: number;
-  status: 'UNSUBMMITED' | 'SUBMMITED';
+  status: 'UNSUBMITTED' | 'SUBMITTED';
   dependents: {
     name: string;
     birthDate: Date;
@@ -25,7 +25,7 @@ export interface UpdateTaxDeclarationRequest {
   alimony: number;
   socialSecurityContribution: number;
   complementarySocialSecurityContribution: number;
-  status: 'UNSUBMMITED' | 'SUBMMITED';
+  status: 'UNSUBMITTED' | 'SUBMITTED';
   dependents: {
     name: string;
     birthDate: Date;

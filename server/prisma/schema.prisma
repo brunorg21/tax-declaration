@@ -14,8 +14,8 @@ datasource db {
 }
 
 enum TaxDeclarationTypes {
-  UNSUBMMITED
-  SUBMMITED
+  UNSUBMITTED
+  SUBMITTED
 }
 
 model User {
