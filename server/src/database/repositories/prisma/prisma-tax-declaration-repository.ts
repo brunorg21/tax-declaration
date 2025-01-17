@@ -75,6 +75,9 @@ export class PrismaTaxDeclarationRepository
           lt: startOfNextYear,
         },
       },
+      include: {
+        dependents: true,
+      },
     });
 
     return taxeDeclarations;
@@ -84,6 +87,9 @@ export class PrismaTaxDeclarationRepository
     const taxDeclaration = await this.prismaService.taxDeclaration.findUnique({
       where: {
         id: taxDeclarationId,
+      },
+      include: {
+        dependents: true,
       },
     });
 
