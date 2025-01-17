@@ -6,7 +6,7 @@ import { DatabaseModule } from '../database/database-module';
 import request from 'supertest';
 import { beforeAll, describe, expect, it } from 'vitest';
 
-describe('AppController', () => {
+describe('UserController', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -20,7 +20,7 @@ describe('AppController', () => {
     await app.init();
   });
 
-  describe('[POST] User Controller', () => {
+  describe('[POST] /users', () => {
     it('should be able to create user', async () => {
       const response = await request(app.getHttpServer()).post('/users').send({
         email: 'bruno@email.com',
