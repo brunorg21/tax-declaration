@@ -6,7 +6,7 @@ import { PrismaService } from '../../src/database/prisma-service';
 export class UserFactory {
   constructor(private prisma: PrismaService) {}
 
-  async makePrismaUser(data: Prisma.UserCreateInput): Promise<User> {
+  async makeUser(data: Prisma.UserCreateInput): Promise<User> {
     const user = await this.prisma.user.create({
       data,
     });
