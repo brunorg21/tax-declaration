@@ -8,7 +8,7 @@ import { UserAlreadyExistsError } from 'src/errors/user-already-exists-error';
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
-  async save({ email, password, name }: Prisma.UserCreateInput) {
+  async save({ email, password, name }: Prisma.UserUncheckedCreateInput) {
     const userAlreadyExists = await this.findByEmail(email);
 
     if (userAlreadyExists) {
