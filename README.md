@@ -67,6 +67,12 @@ Certifique-se de ter instalado:
   yarn start:dev
 ```
 
+6. Para acessar documentação da api (Swagger):
+
+```bash
+  http://localhost:3000/api
+```
+
 ### Frontend (Web)
 
 1. Acesse a pasta do frontend:
