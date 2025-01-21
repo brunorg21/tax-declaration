@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { signUp } from "../../http/sign-up";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 const signUpSchema = z.object({
   email: z
@@ -48,8 +49,13 @@ export function SignUp() {
       navigate("/session/sign-in");
     },
     onError: (error) => {
-      console.log(error);
-      toast("Erro ao criar conta", { type: "error" });
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 400) {
+          toast("Email já cadastrado", { type: "error" });
+        } else {
+          toast("Erro ao criar conta", { type: "error" });
+        }
+      }
     },
   });
 

@@ -35,6 +35,7 @@ export function SignInForm() {
       navigate("/");
     } catch (error) {
       console.error(error);
+      navigate("/session/sign-in");
     }
   }
   return (

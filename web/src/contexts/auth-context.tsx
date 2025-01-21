@@ -15,7 +15,6 @@ import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
 import { api } from "../lib/axios";
 import { me } from "../http/me";
-import { redirect } from "react-router-dom";
 
 interface AuthContextProps {
   signInMutate: UseMutateAsyncFunction<
@@ -52,7 +51,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .catch(() => {
           cookie.remove("access_token");
           toast("Sua sessão expirou", { type: "error" });
-          redirect("/session/sign-in");
         });
     }
   }, []);
