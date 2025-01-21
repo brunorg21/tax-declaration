@@ -16,19 +16,48 @@ datasource db {
 enum TaxDeclarationTypes {
   UNSUBMITTED
   SUBMITTED
+  RECTIFIED
 }
 
 model User {
-  id              String           @id @default(uuid())
-  email           String           @unique
-  name            String
-  password        String
-  taxDeclarations TaxDeclaration[]
+  id                    String                  @id @default(uuid())
+  email                 String                  @unique
+  name                  String
+  password              String
+  taxDeclarations       TaxDeclaration[]
+  twoFactorEnabled      Boolean                 @default(false)
+  twoFactorEnableSecret String?
+  TaxDeclarationHistory TaxDeclarationHistory[]
 }
 
 model TaxDeclaration {
+  id                                      String                  @id @default(uuid())
+  createdAt                               DateTime                @default(now())
+  medicalExpenses                         Float
+  educationExpenses                       Float
+  earnings                                Float
+  alimony                                 Float?
+  socialSecurityContribution              Float
+  complementarySocialSecurityContribution Float
+  status                                  TaxDeclarationTypes
+  user                                    User                    @relation(fields: [userId], references: [id])
+  userId                                  String
+  dependents                              Dependents[]
+  taxDeclarationHistories                 TaxDeclarationHistory[]
+}
+
+model Dependents {
+  id               String         @id @default(uuid())
+  name             String
+  cpf              String         @unique
+  email            String?
+  birthDate        DateTime
+  taxDeclaration   TaxDeclaration @relation(fields: [taxDeclarationId], references: [id])
+  taxDeclarationId String
+}
+
+model TaxDeclarationHistory {
   id                                      String              @id @default(uuid())
-  createdAt                               DateTime            @default(now())
   medicalExpenses                         Float
   educationExpenses                       Float
   earnings                                Float
@@ -38,15 +67,8 @@ model TaxDeclaration {
   status                                  TaxDeclarationTypes
   user                                    User                @relation(fields: [userId], references: [id])
   userId                                  String
-  dependents                              Dependents[]
-}
-
-model Dependents {
-  id               String          @id @default(uuid())
-  name             String
-  cpf              String          @unique
-  email            String
-  birthDate        DateTime
-  taxDeclaration   TaxDeclaration? @relation(fields: [taxDeclarationId], references: [id])
-  taxDeclarationId String?
+  modifiedAt                              DateTime            @default(now())
+  taxDeclaration                          TaxDeclaration      @relation(fields: [taxDeclarationId], references: [id])
+  taxDeclarationId                        String
+  dependentsHistory                       Json
 }
