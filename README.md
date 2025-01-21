@@ -37,7 +37,7 @@ Certifique-se de ter instalado:
    ```bash
     cd server
    ```
-2. Crie um arquivo .env na pasta ./server e adicione os seguintes valores:
+2. Crie um arquivo .env na pasta ./server e adicione os seguintes valores (caso for rodar fora do container docker):
 
 ```bash
   DATABASE_URL="postgresql://root:root@localhost:5432/tax-declaration-db?schema=public"
@@ -53,13 +53,20 @@ Certifique-se de ter instalado:
   yarn install
 ```
 
-4. Caso for rodar projeto fora do Docker, executar comando dentro da pasta ./server para migrations:
+4. Para auxiliar com o ambiente de desenvolvimento deixei um arquivo docker-compose dentro do server
+   para subir um banco de dados, execute o comando abaixo se for rodar o projeto fora do container docker:
+
+```bash
+  docker-compose up -d
+```
+
+5. Caso for rodar projeto fora do Docker, executar comando dentro da pasta ./server para migrations:
 
 ```bash
   npx prisma migrate dev
 ```
 
-5. Para rodar projeto fora do Docker:
+6. Para rodar projeto fora do Docker:
 
 ```bash
   npm run start:dev
@@ -67,7 +74,7 @@ Certifique-se de ter instalado:
   yarn start:dev
 ```
 
-6. Para acessar documentação da api (Swagger):
+7. Para acessar documentação da api (Swagger):
 
 ```bash
   http://localhost:3000/api
@@ -79,7 +86,7 @@ Certifique-se de ter instalado:
    ```bash
     cd web
    ```
-2. Crie um arquivo .env na pasta ./web e adicione os seguintes valores:
+2. Crie um arquivo .env na pasta ./web e adicione os seguintes valores (caso for rodar fora do container docker):
 
 ```bash
   VITE_API_BASE_URL="http://localhost:3000"
@@ -112,10 +119,19 @@ Certifique-se de ter instalado:
   POSTGRES_USER=root
   POSTGRES_PASSWORD=root
   POSTGRES_DB=tax-declaration-db
+  VITE_API_BASE_URL="http://localhost:3000"
 ```
 
 2. Pra buildar a imagem e rodar o projeto:
 
 ```bash
   docker-compose up --build
+```
+
+## Teste de integração
+
+1. Vá para pasta ./server e execute o comando:
+
+```bash
+  npm run test:e2e
 ```
