@@ -2,7 +2,10 @@ import { TaxDeclaration } from '@prisma/client';
 
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma-service';
-import { TaxDeclarationRepository } from '../tax-declaration-repository';
+import {
+  TaxDeclarationRepository,
+  TaxDeclarationWithDependents,
+} from '../tax-declaration-repository';
 import {
   CreateTaxDeclarationRequest,
   UpdateTaxDeclarationRequest,
@@ -77,13 +80,16 @@ export class PrismaTaxDeclarationRepository
       },
       include: {
         dependents: true,
+        taxDeclarationHistories: true,
       },
     });
 
     return taxeDeclarations;
   }
 
-  async findUnique(taxDeclarationId: string): Promise<TaxDeclaration | null> {
+  async findUnique(
+    taxDeclarationId: string,
+  ): Promise<TaxDeclarationWithDependents | null> {
     const taxDeclaration = await this.prismaService.taxDeclaration.findUnique({
       where: {
         id: taxDeclarationId,
@@ -100,34 +106,16 @@ export class PrismaTaxDeclarationRepository
     return taxDeclaration;
   }
   async update(
-    data: UpdateTaxDeclarationRequest,
+    taxDeclarationToUpdate: UpdateTaxDeclarationRequest,
     taxDeclarationId: string,
   ): Promise<void> {
     const updateData: any = {
-      ...data,
+      ...taxDeclarationToUpdate,
       dependents: undefined,
     };
 
-    if (data.dependents && data.dependents.length > 0) {
-      updateData.dependents = {
-        updateMany: {
-          data: data.dependents.map((e) => ({
-            birthDate: e.birthDate,
-            cpf: e.cpf,
-            email: e.email,
-            name: e.name,
-          })),
-          where: {
-            taxDeclarationId,
-          },
-        },
-      };
-    }
-
     await this.prismaService.taxDeclaration.update({
-      where: {
-        id: taxDeclarationId,
-      },
+      where: { id: taxDeclarationId },
       data: updateData,
     });
   }

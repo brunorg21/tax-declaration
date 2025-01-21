@@ -1,40 +1,40 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { TaxDeclarationTypes } from '@prisma/client';
+import { Dependents, TaxDeclarationTypes } from '@prisma/client';
 
 export class UpdateTaxDeclarationDTO {
   @ApiProperty({
     description: 'Medical expenses of the user',
-    example: '2000.50',
+    example: 2000.5,
   })
-  medicalExpenses: string;
+  medicalExpenses: number;
 
   @ApiProperty({
     description: 'Education expenses of the user',
-    example: '1500.75',
+    example: 1500.75,
   })
-  educationExpenses: string;
+  educationExpenses: number;
 
-  @ApiProperty({ description: 'Earnings of the user', example: '50000.00' })
-  earnings: string;
+  @ApiProperty({ description: 'Earnings of the user', example: 50000.0 })
+  earnings: number;
 
   @ApiProperty({
     description: 'Alimony paid by the user (optional)',
-    example: '1000.00',
+    example: 1000.0,
     required: false,
   })
-  alimony?: string;
+  alimony?: number;
 
   @ApiProperty({
     description: 'Social security contributions',
-    example: '3000.00',
+    example: 3000.0,
   })
-  socialSecurityContribution: string;
+  socialSecurityContribution: number;
 
   @ApiProperty({
     description: 'Complementary social security contributions',
-    example: '500.00',
+    example: 500.0,
   })
-  complementarySocialSecurityContribution: string;
+  complementarySocialSecurityContribution: number;
 
   @ApiProperty({
     description: 'Status of the tax declaration',
@@ -43,4 +43,18 @@ export class UpdateTaxDeclarationDTO {
     default: 'UNSUBMITTED',
   })
   status: TaxDeclarationTypes;
+
+  @ApiProperty({
+    description: 'Dependents associated with the tax declaration',
+    type: 'array',
+    example: [
+      {
+        name: 'John Doe',
+        email: 'jhon@doe.com',
+        birthDate: new Date(),
+        cpf: '123.456.789-00',
+      },
+    ],
+  })
+  dependents: Dependents[];
 }

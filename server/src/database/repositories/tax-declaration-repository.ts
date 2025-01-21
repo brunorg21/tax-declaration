@@ -2,7 +2,11 @@ import {
   CreateTaxDeclarationRequest,
   UpdateTaxDeclarationRequest,
 } from '@/tax-declaration/tax-declaration.service';
-import { TaxDeclaration } from '@prisma/client';
+import { Dependents, TaxDeclaration } from '@prisma/client';
+
+export interface TaxDeclarationWithDependents extends TaxDeclaration {
+  dependents: Dependents[];
+}
 
 export abstract class TaxDeclarationRepository {
   abstract save(taxDeclaration: CreateTaxDeclarationRequest): Promise<void>;
@@ -10,7 +14,9 @@ export abstract class TaxDeclarationRepository {
     userId: string,
     year: number,
   ): Promise<TaxDeclaration[]>;
-  abstract findUnique(taxDeclarationId: string): Promise<TaxDeclaration | null>;
+  abstract findUnique(
+    taxDeclarationId: string,
+  ): Promise<TaxDeclarationWithDependents | null>;
   abstract update(
     data: UpdateTaxDeclarationRequest,
     taxDeclarationId: string,

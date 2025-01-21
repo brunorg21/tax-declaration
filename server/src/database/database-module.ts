@@ -6,6 +6,8 @@ import { TaxDeclarationRepository } from './repositories/tax-declaration-reposit
 import { PrismaTaxDeclarationRepository } from './repositories/prisma/prisma-tax-declaration-repository';
 import { DependentsRepository } from './repositories/dependents-repository';
 import { PrismaDependentsRepository } from './repositories/prisma/prisma-dependents-repository';
+import { TaxDeclarationHistoryRepository } from './repositories/tax-declaration-history-repository';
+import { PrismaTaxDeclarationHistoryRepository } from './repositories/prisma/prisma-tax-declaration-history-repository';
 
 @Module({
   imports: [],
@@ -23,12 +25,17 @@ import { PrismaDependentsRepository } from './repositories/prisma/prisma-depende
       provide: DependentsRepository,
       useClass: PrismaDependentsRepository,
     },
+    {
+      provide: TaxDeclarationHistoryRepository,
+      useClass: PrismaTaxDeclarationHistoryRepository,
+    },
   ],
   exports: [
     PrismaService,
     UserRepository,
     TaxDeclarationRepository,
     DependentsRepository,
+    TaxDeclarationHistoryRepository,
   ],
 })
 export class DatabaseModule {}

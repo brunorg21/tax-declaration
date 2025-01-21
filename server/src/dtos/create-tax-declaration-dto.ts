@@ -39,8 +39,8 @@ export class CreateTaxDeclarationDTO {
   @ApiProperty({
     description: 'Status of the tax declaration',
     enum: TaxDeclarationTypes,
-    example: 'UNSUBMMITED',
-    default: 'UNSUBMMITED',
+    example: 'UNSUBMITTED',
+    default: 'UNSUBMITTED',
   })
   status: TaxDeclarationTypes;
 

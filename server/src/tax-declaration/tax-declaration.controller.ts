@@ -11,19 +11,17 @@ import {
 import { TaxDeclarationService } from './tax-declaration.service';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { CreateTaxDeclarationDTO } from '@/dtos/create-tax-declaration-dto';
-import { TaxDeclarationTypes } from '@prisma/client';
 import { CurrentUser, UserPayload } from '@/auth/current-user-decorator';
 import { z } from 'zod';
 import { ZodValidationPipe } from '@/pipes/zod-validation-pipe';
 import { UpdateTaxDeclarationDTO } from '@/dtos/update-tax-declaration-dto';
+import { createTaxDeclarationValidator } from '@/validators/create-tax-declaration-validator';
+import { updateTaxDeclarationValidator } from '@/validators/update-tax-declaration-validator';
+import { taxDeclarationHistoryQueryValidator } from '@/validators/tax-declaration-history-query-validator';
 
-const yearQuerySchema = z
-  .string()
-  .optional()
-  .default(new Date().getFullYear().toString())
-  .transform(Number);
-
-const queryYearValdationPipe = new ZodValidationPipe(yearQuerySchema);
+const queryYearValdationPipe = new ZodValidationPipe(
+  taxDeclarationHistoryQueryValidator,
+);
 
 const taxDeclarationIdParamSchema = z.string();
 
@@ -31,79 +29,12 @@ const taxDeclarationIdValidationPipe = new ZodValidationPipe(
   taxDeclarationIdParamSchema,
 );
 
-const createTaxDeclarationSchema = z.object({
-  medicalExpenses: z.number(),
-  educationExpenses: z.number(),
-  earnings: z.number(),
-  alimony: z.number(),
-  socialSecurityContribution: z.number(),
-  complementarySocialSecurityContribution: z.number(),
-  status: z
-    .enum([TaxDeclarationTypes.SUBMITTED, TaxDeclarationTypes.UNSUBMITTED])
-    .default(TaxDeclarationTypes.UNSUBMITTED),
-  dependents: z
-    .array(
-      z.object({
-        name: z.string({
-          required_error: 'Dependent name is required',
-        }),
-        birthDate: z.coerce.date(),
-        cpf: z
-          .string()
-          .regex(
-            /^(?!000\.000\.000\-00)(?!111\.111\.111\-11)(?!222\.222\.222\-22)(?!333\.333\.333\-33)(?!444\.444\.444\-44)(?!555\.555\.555\-55)(?!666\.666\.666\-66)(?!777\.777\.777\-77)(?!888\.888\.888\-88)(?!999\.999\.999\-99)\d{3}\.\d{3}\.\d{3}\-\d{2}$/,
-            {
-              message: 'Invalid CPF format',
-            },
-          ),
-        email: z.string().email(),
-      }),
-    )
-    .optional()
-    .default([]),
-});
-
-const updateTaxDeclarationSchema = z.object({
-  medicalExpenses: z.number(),
-  educationExpenses: z.number(),
-  earnings: z.number(),
-  alimony: z.number(),
-  socialSecurityContribution: z.number(),
-  complementarySocialSecurityContribution: z.number(),
-  status: z
-    .enum([TaxDeclarationTypes.UNSUBMITTED, TaxDeclarationTypes.SUBMITTED])
-    .default(TaxDeclarationTypes.UNSUBMITTED),
-  dependents: z
-    .array(
-      z.object({
-        name: z.string({
-          required_error: 'Dependent name is required',
-        }),
-        birthDate: z.coerce.date(),
-        cpf: z
-          .string()
-          .regex(
-            /^(?!000\.000\.000\-00)(?!111\.111\.111\-11)(?!222\.222\.222\-22)(?!333\.333\.333\-33)(?!444\.444\.444\-44)(?!555\.555\.555\-55)(?!666\.666\.666\-66)(?!777\.777\.777\-77)(?!888\.888\.888\-88)(?!999\.999\.999\-99)\d{3}\.\d{3}\.\d{3}\-\d{2}$/,
-            {
-              message: 'Invalid CPF format',
-            },
-          ),
-        email: z.string().email(),
-      }),
-    )
-    .optional()
-    .default([]),
-});
-
-type UpdateTaxDeclarationType = z.infer<typeof updateTaxDeclarationSchema>;
-type CreateTaxDeclarationType = z.infer<typeof createTaxDeclarationSchema>;
-
 const createTaxDeclarationValidationPipe = new ZodValidationPipe(
-  createTaxDeclarationSchema,
+  createTaxDeclarationValidator,
 );
 
 const updateTaxDeclarationValidationPipe = new ZodValidationPipe(
-  updateTaxDeclarationSchema,
+  updateTaxDeclarationValidator,
 );
 
 @ApiBearerAuth()
@@ -125,7 +56,7 @@ export class TaxDeclarationController {
       status,
       alimony,
       dependents,
-    }: CreateTaxDeclarationType,
+    }: CreateTaxDeclarationDTO,
   ) {
     await this.taxDeclarationService.create({
       complementarySocialSecurityContribution,
@@ -160,7 +91,7 @@ export class TaxDeclarationController {
   @ApiParam({ name: 'taxDeclarationId', type: 'string' })
   async update(
     @Body(updateTaxDeclarationValidationPipe)
-    data: UpdateTaxDeclarationType,
+    data: UpdateTaxDeclarationDTO,
     @Param('taxDeclarationId', taxDeclarationIdValidationPipe)
     taxDeclarationId: string,
   ) {

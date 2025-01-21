@@ -23,8 +23,21 @@ export class UserService {
     });
   }
 
+  async update(user: User) {
+    await this.userRepository.update(user);
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     const user = await this.userRepository.findByEmail(email);
+
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
+  async findById(userId: string): Promise<User | null> {
+    const user = await this.userRepository.findById(userId);
 
     if (!user) {
       return null;
