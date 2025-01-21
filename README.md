@@ -95,7 +95,7 @@ Certifique-se de ter instalado:
   yarn dev
 ```
 
-## Docker
+## Setup para rodar projeto no Docker
 
 1. Crie um arquivo .env na raiz do projeto e adicione os seguintes valores:
 
@@ -108,7 +108,7 @@ Certifique-se de ter instalado:
   POSTGRES_DB=tax-declaration-db
 ```
 
-2. Caso for rodar projeto no Docket:
+2. Pra buildar a imagem e rodar o projeto:
 
 ```bash
   docker-compose up --build
